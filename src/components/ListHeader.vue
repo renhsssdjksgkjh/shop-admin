@@ -24,7 +24,7 @@
 <script setup>
 import { computed } from 'vue'
 
-
+// 父子组件通信使用 defineEmits 和 defineProps
 const props = defineProps({
     layout: {
         type: String,
