@@ -6,7 +6,8 @@ import {
     sortGoodsSkusCard,
     createGoodsSkusCardValue,
     updateGoodsSkusCardValue,
-    deleteGoodsSkusCardValue
+    deleteGoodsSkusCardValue,
+    ChooseAndSetGoodsSkusCard
 } from '~/api/goods.js'
 import { useArrayMoveDown, useArrayMoveUp } from './utils'
 //当前商品ID
@@ -95,6 +96,21 @@ export function sortCard(action, index) {
         func(sku_card_list.value, index)
     }).finally(() => {
         bodyLoading.value = false
+    })
+}
+
+//选择设置规格
+export function handleChooseSetGoodsSkusCard(id, data) {
+    let item = sku_card_list.value.find(o => o.id == id)
+    item.loading = true
+    ChooseAndSetGoodsSkusCard(id, data).then(res => {
+        item.name = item.text = res.goods_skus_card.name
+        item.goodsSkusCardValue = res.goods_skus_card_value.map(o => {
+            o.text = o.value || '属性值'
+            return o
+        })
+    }).finally(() => {
+        item.loading = false
     })
 }
 

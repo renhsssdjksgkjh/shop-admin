@@ -43,15 +43,22 @@ import {
     handleUpdate,
     handleDelete,
     sortCard,
-    bodyLoading
+    bodyLoading,
+    handleChooseSetGoodsSkusCard
 } from '~/composables/useSku.js'
 import ChooseSku from '~/components/ChooseSku.vue'
 import { ref } from 'vue'
 
+
 const ChooseSkuRef = ref(null)
 
 const handleChooseSku = (item) => {
-    ChooseSkuRef.value.open()
+    ChooseSkuRef.value.open((value) => {
+        handleChooseSetGoodsSkusCard(item.id, {
+            name: value.name,
+            value: value.list
+        })
+    })
 }
 
 </script>
@@ -60,5 +67,4 @@ const handleChooseSku = (item) => {
 .el-card__header {
     @apply !p-2 bg-gray-50;
 }
-
 </style>
