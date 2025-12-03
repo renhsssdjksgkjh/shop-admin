@@ -8,10 +8,11 @@
                 <div class="custom-tree-node">
                     <span>{{ data.name }}</span>
                     <div class="ml-auto">
+                        <el-button type="primary" text size="small" @click="openGoodsDrawer(data)"
+                            :loading="data.goodsDrawerLoading">推荐商品</el-button>
                         <el-switch :modelValue="data.status" :active-value="1" :inactive-value="0"
                             @change="handleStatusChange($event, data)" />
                         <el-button type="primary" text size="small" @click.stop="handleEdit(data)">修改</el-button>
-                        <el-button type="primary" text size="small" @click.stop="addChild(data.id)">增加</el-button>
                         <el-popconfirm width="220" title="是否确定要删除该菜单？" confirm-button-text="确认" cancel-button-text="取消"
                             @confirm="handleDelete(data.id)">
                             <template #reference>
@@ -29,6 +30,8 @@
                 </el-form-item>
             </el-form>
         </FormDrawer>
+
+        <GoodsDrawer ref="GoodsDrawerRef"></GoodsDrawer>
     </el-card>
 </template>
 
@@ -37,6 +40,10 @@ import ListHeader from '~/components/ListHeader.vue'
 import { useInitTable, useInitForm } from '~/composables/useCommon.js'
 import { getCategoryList, createCategory, updateCategory, updateCategoryStatus, deleteCategory } from '~/api/category.js'
 import FormDrawer from '~/components/FormDrawer.vue'
+import GoodsDrawer from './components/GoodsDrawer.vue'
+import { ref } from 'vue'
+
+const GoodsDrawerRef = ref(null)
 
 const {
     getData,
@@ -47,7 +54,10 @@ const {
 } = useInitTable({
     getList: getCategoryList,
     onGetListSuccess: (res) => {
-        tableData.value = res
+        tableData.value = res.map(o => {
+            o.goodsDrawerLoading = false
+            return o
+        })
     },
     delete: deleteCategory,
     updateStatus: updateCategoryStatus
@@ -73,10 +83,8 @@ const {
     create: createCategory
 })
 
-const addChild = (id) => {
-    handleCreate()
-    form.rule_id = id
-    form.status = 1
+const openGoodsDrawer = (data) => {
+    GoodsDrawerRef.value.open(data)
 }
 
 </script>
