@@ -19,8 +19,25 @@
                 </template>
             </Search>
 
-            <ListHeader layout="refresh,create,delete" @delete="handleMultiDelete" @refresh="getData"
-                @create="handleCreate">
+            <ListHeader layout="refresh,create" @refresh="getData" @create="handleCreate">
+                <el-button type="danger" size="small" @click="handleMultiDelete"
+                    v-if="searchForm.tab != 'delete'">批量删除</el-button>
+
+                <el-popconfirm width="220" title="是否确定恢复该商品？" confirm-button-text="确认" cancel-button-text="取消"
+                    @confirm="handleRestoreGoods" v-else>
+                    <template #reference>
+                        <el-button type="warning" size="small">恢复商品</el-button>
+                    </template>
+                </el-popconfirm>
+
+                <el-popconfirm width="220" title="是否确定永久删除该商品？" confirm-button-text="确认" cancel-button-text="取消"
+                    @confirm="handleDestroyGoods" v-if="searchForm.tab == 'delete'">
+                    <template #reference>
+                        <el-button type="danger" size="small">彻底删除</el-button>
+                    </template>
+                </el-popconfirm>
+
+
                 <el-button type="primary" size="small" @click="handleMultiStatusChange(1)"
                     v-if="searchForm.tab == 'all' || searchForm.tab == 'off'">上架</el-button>
                 <el-button type="danger" size="small" @click="handleMultiStatusChange(0)"
@@ -71,14 +88,17 @@
                         <div v-if="searchForm.tab != 'delete'">
                             <el-button class="px-1" type="primary" size="small" text
                                 @click="handleEdit(row)">修改</el-button>
-                            <el-button class="px-1" type="primary" size="small" text @click="handleSetGoodsSkus(row)"
+                            <el-button class="px-1"
+                                :type="(row.sku_type == 0 && !row.sku_value) || (row.sku_type == 1 && !row.goods_skus.length) ? 'danger' : 'primary'"
+                                size="small" text @click="handleSetGoodsSkus(row)"
                                 :loading="row.skusLoading">商品规格</el-button>
                             <el-button class="px-1" :type="row.goods_banner.length == 0 ? 'danger' : 'primary'"
-                                size="small" text @click="handleSetGoodsBanners(row)" :loading="row.bannersLoading">设置轮播图</el-button>
+                                size="small" text @click="handleSetGoodsBanners(row)"
+                                :loading="row.bannersLoading">设置轮播图</el-button>
                             <el-button class="px-1" :type="row.content ? 'primary' : 'danger'" size="small" text
                                 @click="handleSetGoodsContent(row)" :loading="row.contentLoading">商品详情</el-button>
                             <el-popconfirm width="220" title="是否确定要删除该商品？" confirm-button-text="确认"
-                                cancel-button-text="取消" @confirm="handleDelete(row.id)">
+                                cancel-button-text="取消" @confirm="handleDelete([row.id])">
                                 <template #reference>
                                     <el-button class="px-1" type="primary" size="small" text>删除</el-button>
                                 </template>
@@ -165,7 +185,7 @@
 import { ref } from 'vue'
 import FormDrawer from '~/components/FormDrawer.vue'
 import ChooseImage from '~/components/ChooseImage.vue'
-import { getGoodsList, updateGoodsStatus, updateGoods, deleteGoods, createGoods } from '~/api/goods.js'
+import { getGoodsList, updateGoodsStatus, updateGoods, deleteGoods, createGoods, restoreGoods, destroyGoods } from '~/api/goods.js'
 import { useInitTable, useInitForm } from '~/composables/useCommon.js'
 import ListHeader from '~/components/ListHeader.vue'
 import { getCategoryList } from '~/api/category.js'
@@ -174,6 +194,7 @@ import SearchItem from '~/components/SearchItem.vue'
 import banners from './banners.vue'
 import content from './content.vue'
 import skus from './skus.vue'
+import { toast } from '~/composables/utils.js'
 
 const roles = ref([])
 const {
@@ -189,7 +210,8 @@ const {
     handleSelectionChange,
     multipleTableRef,
     handleMultiDelete,
-    handleMultiStatusChange
+    handleMultiStatusChange,
+    multiSelectionIds
 } = useInitTable({
     delete: deleteGoods,
     updateStatus: updateGoodsStatus,
@@ -294,4 +316,28 @@ const handleSetGoodsContent = (row) => contentRef.value.open(row)
 //设置商品规格
 const skusRef = ref(null)
 const handleSetGoodsSkus = (row) => skusRef.value.open(row)
+
+//恢复商品
+const handleRestoreGoods = () => {
+    useMultiAction(restoreGoods, '恢复')
+}
+
+//彻底删除
+const handleDestroyGoods = () => {
+    useMultiAction(destroyGoods, '彻底删除')
+}
+
+//彻底删除和彻底恢复相似代码封装
+function useMultiAction(func, msg) {
+    loading.value = true
+    func(multiSelectionIds.value).then(res => {
+        toast(msg + '成功！')
+        if (multipleTableRef.value) {
+            multipleTableRef.value.clearSelection()
+        }
+        getData()
+    }).finally(() => {
+        loading.value = false
+    })
+}
 </script>
