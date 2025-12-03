@@ -13,10 +13,10 @@
                     </el-icon>
                     <span>{{ data.name }}</span>
                     <div class="ml-auto">
+                        <el-button type="primary" text size="small" >推荐商品</el-button>
                         <el-switch :modelValue="data.status" :active-value="1" :inactive-value="0"
                             @change="handleStatusChange($event, data)" />
                         <el-button type="primary" text size="small" @click.stop="handleEdit(data)">修改</el-button>
-                        <el-button type="primary" text size="small" @click.stop="addChild(data.id)">增加</el-button>
                         <el-popconfirm width="220" title="是否确定要删除该菜单？" confirm-button-text="确认" cancel-button-text="取消"
                             @confirm="handleDelete(data.id)">
                             <template #reference>
@@ -122,12 +122,6 @@ const {
     update: updateRule,
     create: createRule
 })
-
-const addChild = (id) => {
-    handleCreate()
-    form.rule_id = id
-    form.status = 1
-}
 
 </script>
 

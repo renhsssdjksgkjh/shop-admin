@@ -85,3 +85,4 @@ export function deleteGoodsSkusCardValue(id) {
 export function ChooseAndSetGoodsSkusCard(id, data) {
     return axios.post(`/admin/goods_skus_card/${id}/set`, data)
 }
+

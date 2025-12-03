@@ -29,7 +29,7 @@
                         <el-input v-model="item.cprice" size="small" type="number"></el-input>
                     </td>
                     <td class="border">
-                        <el-input v-model="item.stock" size="small" type="number"></el-input>
+                        <el-input v-model="item.stock" swize="small" type="number"></el-input>
                     </td>
                     <td class="border">
                         <el-input v-model="item.volume" size="small" type="number"></el-input>

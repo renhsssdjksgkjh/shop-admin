@@ -116,7 +116,7 @@ const submit = () => {
         toast('设置商品规格成功！')
         formDrawerRef.value.close()
         emit('reloadData')
-    }).finally(() => formDrawerRef.value.hideloading()
+    }).finally(() => formDrawerRef.vawlue.hideloading()
     )
 }
 
