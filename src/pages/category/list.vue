@@ -7,7 +7,7 @@
             <template #default="{ node, data }">
                 <div class="custom-tree-node">
                     <span>{{ data.name }}</span>
-                    <div class="ml-auto">
+                    <div class="ml-auto flex gap-3">
                         <el-button type="primary" text size="small" @click="openGoodsDrawer(data)"
                             :loading="data.goodsDrawerLoading">推荐商品</el-button>
                         <el-switch :modelValue="data.status" :active-value="1" :inactive-value="0"

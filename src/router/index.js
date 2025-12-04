@@ -16,6 +16,7 @@ import ManagerList from '~/pages/manager/list.vue'
 import AccessList from '~/pages/access/list.vue'
 import RoleList from '~/pages/Role/list.vue'
 import SkusList from '~/pages/skus/list.vue'
+import LevelList from '~/pages/level/list.vue'
 
 
 //默认路由，所有用户共享
@@ -109,8 +110,13 @@ const asyncRoutes = [
         path: '/skus/list', name: '/skus/list', component: SkusList, meta: {
             title: "规格管理"
         }
+    },
+    {
+        path: '/level/list', name: '/level/list', component: LevelList, meta: {
+            title: "会员等级"
+        }
     }
- 
+
 ]
 
 export const router = createRouter({
