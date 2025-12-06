@@ -18,6 +18,7 @@ import RoleList from '~/pages/Role/list.vue'
 import SkusList from '~/pages/skus/list.vue'
 import LevelList from '~/pages/level/list.vue'
 import BuyList from '~/pages/setting/buy.vue'
+import ShipList from '~/pages/setting/ship.vue'
 
 
 //默认路由，所有用户共享
@@ -120,6 +121,11 @@ const asyncRoutes = [
     {
         path: '/setting/buy', name: '/setting/buy', component: BuyList, meta: {
             title: "交易设置"
+        }
+    },
+    {
+        path: '/setting/ship', name: '/setting/ship', component: ShipList, meta: {
+            title: "物流设置"
         }
     }
 ]

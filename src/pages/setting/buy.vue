@@ -143,7 +143,7 @@ import { getToken } from '~/composables/auth.js'
 
 const token = getToken()
 
-//配置按钮表单
+//配置按钮表单  
 const drawerType = ref('alipay')
 const FormDrawerRef = ref(null)
 const open = (key) => {
