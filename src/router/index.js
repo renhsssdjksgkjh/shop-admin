@@ -73,7 +73,7 @@ const asyncRoutes = [
     },
     {
         path: '/setting/base', name: '/setting/base', component: SettingList, meta: {
-            title: "配置"
+            title: "基础配置"
         }
     },
     {

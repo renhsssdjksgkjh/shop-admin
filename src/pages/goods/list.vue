@@ -196,7 +196,6 @@ import content from './content.vue'
 import skus from './skus.vue'
 import { toast } from '~/composables/utils.js'
 
-const roles = ref([])
 const {
     searchForm,
     resetSearchForm,
