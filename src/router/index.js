@@ -17,8 +17,9 @@ import AccessList from '~/pages/access/list.vue'
 import RoleList from '~/pages/Role/list.vue'
 import SkusList from '~/pages/skus/list.vue'
 import LevelList from '~/pages/level/list.vue'
-import BuyList from '~/pages/setting/buy.vue'
-import ShipList from '~/pages/setting/ship.vue'
+import SettingBuy from '~/pages/setting/buy.vue'
+import SettingShip from '~/pages/setting/ship.vue'
+import DistributionIndex from '~/pages/distribution/index.vue'
 
 
 //默认路由，所有用户共享
@@ -119,13 +120,18 @@ const asyncRoutes = [
         }
     },
     {
-        path: '/setting/buy', name: '/setting/buy', component: BuyList, meta: {
+        path: '/setting/buy', name: '/setting/buy', component: SettingBuy, meta: {
             title: "交易设置"
         }
     },
     {
-        path: '/setting/ship', name: '/setting/ship', component: ShipList, meta: {
+        path: '/setting/ship', name: '/setting/ship', component: SettingShip, meta: {
             title: "物流设置"
+        }
+    },
+    {
+        path: '/distribution/index', name: '/distribution/index', component: DistributionIndex, meta: {
+            title: "分销员管理"
         }
     }
 ]
